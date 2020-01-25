@@ -20,7 +20,7 @@ Route::prefix('v1')->namespace('Api\V1\Users')->group(function () {
         Route::post('register', 'UserAuthenticationController@register')->name('users.register');
     });
 
-    Route::middleware(['auth:api', 'verified'])->group(function () {
+    Route::middleware(['auth:api'])->group(function () {
         Route::resource('users', 'UserProfileController');
     });
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Users;
 
 use App\Http\Controllers\Api\V1\BaseApiController;
+use App\Http\Resources\Users\UserProfileResource;
 use App\Services\Users\UserProfileService;
 use Illuminate\Http\Response;
 
@@ -33,7 +34,7 @@ class UserProfileController extends BaseApiController
         $result = $this->userProfileService->getProfile();
 
         if ($result) {
-            return $this->sendResponse($result, Response::HTTP_OK);
+            return $this->sendResponse(new UserProfileResource($result), Response::HTTP_OK);
         }
 
         return $this->sendResponse(
