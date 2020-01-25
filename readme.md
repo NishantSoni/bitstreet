@@ -4,6 +4,8 @@
     
     Step-2 : cd your_project_folder
     
+    Step-3 : git checkout development
+    
     Step-3 : cp .env.example .env
     
     Step-4 : Setup your email driver for sending emails and database also.
