@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Response;
 
 class Handler extends ExceptionHandler
 {
@@ -42,10 +43,29 @@ class Handler extends ExceptionHandler
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Exception  $exception
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+        if ($request->wantsJson() || $request->expectsJson()) {
+            return $this->handleApiException($request, $exception);
+        } else {
+            return parent::render($request, $exception);
+        }
+    }
+
+    /**
+     * Handle the api exception response.
+     *
+     * @param $request
+     * @param Exception $exception
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function handleApiException($request, Exception $exception)
+    {
+        return response()->json([
+            'data' => [],
+            'message' => $exception->getMessage()], Response::HTTP_FORBIDDEN
+        );
     }
 }
